@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Note from './models/note';
+import {config} from 'dotenv'
 
+config()
 const cors = require('cors')
 const app = express();
 const PORT = 5000;
@@ -40,7 +42,7 @@ app.get('/getusers', (req, res) => {
 
 app.post('/addNotes', async(req, res) => {
     const newNote  = new Note({
-        title: 'recordatorio',
+        title: 'lectura',
         description: 'fiesta este 29 de marzo'
 
     })
@@ -48,7 +50,7 @@ app.post('/addNotes', async(req, res) => {
     res.json(createNote)
 })
 
-mongoose.connect('mongodb+srv://davisvladimirpb:ktl6piY5bKmdNFxA@firstcluster.fwgemid.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URL!)
     .then(() => {
         console.log('server running');
         app.listen(PORT)
