@@ -1,14 +1,36 @@
-import React from "react"
+import React, { useState } from "react"
+import { addNote } from "../../services/notes.services"
 
 interface NewNoteProps {
-    labels: String,
     closeModal: () => void,
     isOpen: boolean
 }
 
-const NewNote: React.FC<NewNoteProps> = ({ labels, closeModal, isOpen }) => {
+const initialForm = {
+    title: "",
+    description: ""
+}
 
+const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen }) => {
+
+    const [formValues, setFormValues] = useState(initialForm)
     if (!isOpen) return null
+
+    const handleInputChanges = (e) => {
+        const {name,value} = e.target;
+        setFormValues({
+            ...formValues,
+            [name]:value
+        })
+
+    }
+
+    const handleAddNote = async()=>{
+        console.log(formValues);
+        await addNote(formValues)
+
+        
+    }
 
     return (
         <>
@@ -27,16 +49,36 @@ const NewNote: React.FC<NewNoteProps> = ({ labels, closeModal, isOpen }) => {
                             </button>
                         </div>
                         <div className="relative p-6 flex-auto">
-                            <form className="flex items-center space-x-6">
-                                <label htmlFor="">Name:</label>
-                                <input type="text" className="required:border-red-500 placeholder-shown:border-gray-500 border-red-600"
-                                    placeholder="insert a name"
-                                />
-                                <label htmlFor="">Description:</label>
-                                <input type="text" className="required:border-red-500 placeholder-shown:border-gray-500 border-red-600"
-                                    placeholder="insert a description"
-                                />
+                            <form>
+                                <div className="grid grid-cols-2 space-y-1">
+                                    <label htmlFor="">Title:</label>
+                                    <input type="text" 
+                                        className="px-2 py-1 border border-gray-400 rounded-md focus:outline-none focus:border-indigo-500"
+                                        placeholder="insert a name"
+                                        name="title"
+                                        value={formValues.title}
+                                        onChange={handleInputChanges}
+                                    />
+                                    <label htmlFor="">Description:</label>
+                                    <textarea 
+                                        className="px-2 py-1 rtl:esize border w-full border-gray-400 rounded-md focus:outline-none focus:border-indigo-500"
+                                        name="description"
+                                        value={formValues.description}
+                                        onChange={handleInputChanges}
+                                    >
+
+                                    </textarea>
+                                </div>
+
                             </form>
+                        </div>
+                        <div className="flex justify-end space-x-1 p-1 border">
+                            <button className="border border-red-600 hover:bg-red-100 py-1 px-2 rounded">Cancel</button>
+                            <button className="border border-green-600 hover:bg-green-100 py-1 px-2 rounded"
+                                onClick={handleAddNote}>
+                                Add
+                            </button>
+
                         </div>
                     </div>
                 </div>

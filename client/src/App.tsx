@@ -5,19 +5,20 @@ import './App.css'
 import UsersComponent from './components/users/users'
 import Navbar from './components/shared/navbar'
 import MainScreen from './components/shared/mainScreen'
+import Notes from './components/notes/notes'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
-      <div>
-        {/* <UsersComponent /> */}
-        <MainScreen />
-
-      </div>
-    </>
+      <Routes>
+        <Route path="/" element={<MainScreen />} />
+        <Route path="/notes" element={<Notes />} />
+        <Route path="/users" element={<UsersComponent />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
