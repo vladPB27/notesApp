@@ -30,7 +30,7 @@ export async function addNote(formValues:Note) {
 
 export async function updateNoteService(id:number, formValues: Note) {
     try {
-        const res = await fetch(`${baseUrl}/udpateNote/${id}`, {
+        const res = await fetch(`${baseUrl}/updateNote/${id}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formValues)

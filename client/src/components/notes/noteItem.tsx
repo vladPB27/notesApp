@@ -7,10 +7,12 @@ import { Note } from "./Note"
 interface Props {
     note: Note,
     deleteNote: (e: number) => void,
+    handleEditNote: (e: Note) => void,
 }
 
-const NoteItem = ({ note, deleteNote }: Props) => {
+const NoteItem = ({ note, deleteNote, handleEditNote }: Props) => {
     // const NoteItem : React.FC<Props> = ({ note , deleteNote}) => {
+
     return (
         <div className="bg-white shadow-md rounded-md p-6 bg-indigo-200">
             <img
@@ -20,7 +22,8 @@ const NoteItem = ({ note, deleteNote }: Props) => {
             <h2 className="text-xl font-bold mb-2">{note.title}</h2>
             <p className="text-gray-700 mb-4">{note.description}</p>
             <div>
-                <button className="px-1">
+                <button className="px-1"
+                    onClick={() => handleEditNote(note)}>
                     <FontAwesomeIcon icon={faPencilAlt} />
                 </button>
                 <button className="px-1"

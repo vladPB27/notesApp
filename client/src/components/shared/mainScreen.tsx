@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import noteImage from '../../assets/images/notesimg.jpg'
 import NewNote from '../notes/newNote';
 
@@ -8,7 +8,7 @@ const MainScreen = () => {
     const openModal = () => setIsOpen(true)
 
     const closeModal = () => setIsOpen(false)
-
+    
     return (
             // {/* <NewNote labels = {label} closeModal={closeModal} isOpen={isOpen}/> */}
 

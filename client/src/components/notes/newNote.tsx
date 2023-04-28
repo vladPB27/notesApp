@@ -1,11 +1,12 @@
-import React, { useState } from "react"
-import { addNote } from "../../services/notes.services"
+import React, { useEffect, useState } from "react"
+import { addNote, updateNoteService } from "../../services/notes.services"
 import { Note } from "./Note"
 
 interface NewNoteProps {
     closeModal: () => void,
     isOpen: boolean,
-    getNotes: ()=> void
+    getNotes: () => void,
+    dataNote: any
 }
 
 const initialForm: Note = {
@@ -16,27 +17,58 @@ const initialForm: Note = {
     // _id: 0
 }
 
-const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
+const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes, dataNote }) => {
 
     const [formValues, setFormValues] = useState(initialForm)
-    if (!isOpen) return null
 
-    const handleInputChanges = (e:any) => {
-        const {name,value} = e.target;
+
+    useEffect(() => {
+        if (dataNote) {
+            console.log(dataNote);
+            setFormValues(dataNote)
+        }
+        console.log(formValues);
+        
+
+    },[])
+
+    // if (!isOpen) return null
+
+    const handleInputChanges = (e: any) => {
+        const { name, value } = e.target;
         setFormValues({
             ...formValues,
-            [name]:value
+            [name]: value
         })
 
     }
 
-    const handleAddNote = async()=>{
+    const handleAddNote = async () => {
         try {
-            await addNote(formValues)    
+            await addNote(formValues)
             closeModal()
             await getNotes()
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    const handleUpdateNote = async() => {
+        try {
+            await updateNoteService(dataNote._id,formValues)
+            closeModal()
+            getNotes()
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    const handleSubmit = async() => {
+        if(dataNote){
+            await handleUpdateNote()
+        }else{
+            await handleAddNote()
         }
     }
 
@@ -46,7 +78,9 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
                 <div className="relative w-auto max-w-md mx-auto my-6">
                     <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
                         <div className="flex items-start justify-between p-5 border-b border-solid rounded-t">
-                            <h3 className="text-2xl font-semibold">Add a note</h3>
+                            <h3 className="text-2xl font-semibold">
+                                {dataNote ? <span>Update</span> : <span>Add</span>} note
+                            </h3>
                             <button
                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-50 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                 onClick={closeModal}
@@ -60,7 +94,7 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
                             <form>
                                 <div className="grid grid-cols-2 space-y-1">
                                     <label htmlFor="">Title:</label>
-                                    <input type="text" 
+                                    <input type="text"
                                         className="px-2 py-1 border border-gray-400 rounded-md focus:outline-none focus:border-indigo-500"
                                         placeholder="insert a name"
                                         name="title"
@@ -68,7 +102,7 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
                                         onChange={handleInputChanges}
                                     />
                                     <label htmlFor="">Description:</label>
-                                    <textarea 
+                                    <textarea
                                         className="px-2 py-1 rtl:esize border w-full border-gray-400 rounded-md focus:outline-none focus:border-indigo-500"
                                         name="description"
                                         value={formValues.description}
@@ -86,7 +120,7 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
                                 Cancel
                             </button>
                             <button className="border border-green-600 hover:bg-green-100 py-1 px-2 rounded"
-                                onClick={handleAddNote}>
+                                onClick={handleSubmit}>
                                 Add
                             </button>
 
