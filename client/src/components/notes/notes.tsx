@@ -1,8 +1,13 @@
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
+import * as noteServices from "../../services/notes.services"
 import NewNote from "./newNote"
+import { Note } from "./Note"
+import NoteItem from "./noteItem"
 
 const Notes = () => {
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState<Note[]>([])
     const [error, setError] = useState(false)
     const items = ['skill', 'jaze', 'stick']
     const [isOpen, setIsOpen] = useState(false)
@@ -12,16 +17,14 @@ const Notes = () => {
     const closeModal = () => setIsOpen(false)
 
     useEffect(() => {
-        fetchData()
+        getNotes()
     }, [])
 
-    const fetchData = async () => {
+    const getNotes = async () => {
         try {
-            const response = await fetch('http://localhost:5000/notes');
             // const response = await fetch('https://jsonplaceholder.typicode.com/users');
-            const data = await response.json()
+            const data = await noteServices.getNotesService()
             console.log('data: ', data);
-            console.log({ data });
             setNotes(data)
 
 
@@ -30,30 +33,46 @@ const Notes = () => {
             setError(true)
         }
     }
-    return (
-        <div>
-            <NewNote closeModal={closeModal} isOpen={isOpen}/>
 
-            <div className="w-full md:w-1/2 mx-auto">
+    const deleteNote = async (id: number) => {
+        try {
+            await noteServices.deleteNoteService(id)
+            await getNotes()
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    return (
+        <div className="">
+            <NewNote closeModal={closeModal} isOpen={isOpen} getNotes={getNotes} />
+
+            <div className="w-full md:w-4/5 mx-auto p-3">
                 <div className="flex items-center bg-white rounded-lg shadow-md">
-                    <input type="text" className="w-full py-2 px-4 focus:outline-none" placeholder="Buscar..."/>
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4">
-                            Buscar
-                        </button>
-                        <button className="bg-green-600 hover:bg-green-800 text-white py-2 px-4 rounded-r-lg"
-                        onClick={openModal}>
-                            New
-                        </button>
+                    <input type="text" className="w-full py-2 px-4 focus:outline-none" placeholder="Buscar..." />
+                    <button className="bg-gray-200 py-2 px-3">
+                        <FontAwesomeIcon icon={faSearch} />
+                    </button>
+                    
                 </div>
+                <button className="bg-indigo-600 hover:bg-indigo-800 text-white py-2 px-2 rounded m-3"
+                        onClick={openModal}>
+                        <FontAwesomeIcon icon={faPlus}/> New
+                </button>
             </div>
+            
 
             {error && <h1>Error</h1>}
 
-            <ul>
+            <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-5 py-3">
                 {notes.map(note => (
-                    <li key={note.id}>{note.title} - {note.description}</li>
+                    <div key={note._id} >
+                        <NoteItem note={note} deleteNote={deleteNote} />
+
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     )
 }

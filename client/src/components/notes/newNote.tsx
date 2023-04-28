@@ -1,22 +1,27 @@
 import React, { useState } from "react"
 import { addNote } from "../../services/notes.services"
+import { Note } from "./Note"
 
 interface NewNoteProps {
     closeModal: () => void,
-    isOpen: boolean
+    isOpen: boolean,
+    getNotes: ()=> void
 }
 
-const initialForm = {
+const initialForm: Note = {
     title: "",
-    description: ""
+    description: "",
+    // createdAt: "",
+    // updatedAt: "",
+    // _id: 0
 }
 
-const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen }) => {
+const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen, getNotes }) => {
 
     const [formValues, setFormValues] = useState(initialForm)
     if (!isOpen) return null
 
-    const handleInputChanges = (e) => {
+    const handleInputChanges = (e:any) => {
         const {name,value} = e.target;
         setFormValues({
             ...formValues,
@@ -26,10 +31,13 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen }) => {
     }
 
     const handleAddNote = async()=>{
-        console.log(formValues);
-        await addNote(formValues)
-
-        
+        try {
+            await addNote(formValues)    
+            closeModal()
+            await getNotes()
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -73,7 +81,10 @@ const NewNote: React.FC<NewNoteProps> = ({ closeModal, isOpen }) => {
                             </form>
                         </div>
                         <div className="flex justify-end space-x-1 p-1 border">
-                            <button className="border border-red-600 hover:bg-red-100 py-1 px-2 rounded">Cancel</button>
+                            <button className="border border-red-600 hover:bg-red-100 py-1 px-2 rounded"
+                                onClick={closeModal}>
+                                Cancel
+                            </button>
                             <button className="border border-green-600 hover:bg-green-100 py-1 px-2 rounded"
                                 onClick={handleAddNote}>
                                 Add

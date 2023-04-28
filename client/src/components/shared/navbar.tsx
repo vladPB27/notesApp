@@ -6,15 +6,13 @@ const Navbar = () => (
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
-                    <a href="#" className="text-black text-2xl font-bold">Notes App</a>
+                    <a href="#" className="text-indigo-700 text-2xl font-bold">Notes App</a>
                 </div>
                 <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                         <Link to='/' className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link>
                         <Link to='/notes' className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Notes</Link>
-                        <Link to='/users' className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</Link>
                         <a href="#" className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
-                        <a href="#" className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Notes</a>
                         <a href="#" className="text-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                         <div className="flex items-center justify-center">
                             <label className="relative inline-flex items-center cursor-pointer">

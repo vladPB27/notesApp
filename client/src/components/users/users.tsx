@@ -28,11 +28,11 @@ function UsersComponent() {
     return (
         <>
             <h1>Lista de Usuarios</h1>
-            <ul>
+            {/* <ul>
                 {users.map( user => 
                     <li key={user.id}><b>{user?.name}</b> {user.age}</li>
                 )}
-            </ul>
+            </ul> */}
         </>
 
     );
