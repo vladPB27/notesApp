@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import config from './config';
+import mysql from 'promise-mysql';
 
-(async () => {
+// connection with mongodb
+/* (async () => {
     try {
         const db =await mongoose.connect(config.MONGO_URL!);
         
@@ -9,4 +11,20 @@ import config from './config';
     } catch (error) {
         console.log(error);
     }
-})()
+})() */
+
+// connection with Mysql
+const connection = mysql.createConnection({
+    host: config.host,
+    database:config.database,
+    user:"root",
+    password:config.password
+})
+
+export const getConnection = () => {
+    return connection;
+}
+
+module.exports = {
+    getConnection
+}

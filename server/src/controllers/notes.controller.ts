@@ -1,6 +1,6 @@
 import { RequestHandler } from "express"
 
-import Note from './Note'
+import Note from '../models/Note'
 
 export const getNotes: RequestHandler = async (req, res) => {
     try {
