@@ -24,3 +24,16 @@ export const addRol: RequestHandler = async (req, res) => {
         return res.json(error)
     }
 }
+
+export const updateRol: RequestHandler = async (req, res) => {
+    try {
+        // PENDIENTE
+        const { id, sigla, nombre } = req.body
+        const datos = {sigla,nombre}
+        const conn = await getConnection();
+        const result = await conn.query("UPDATE roles SET ? WHERE id = ?",[datos,id]);
+        return res.json(result)
+    } catch (error) {
+        return res.json(error)
+    }
+}
