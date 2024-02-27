@@ -5,6 +5,7 @@ const router = Router()
 
 router.get('/roles',rolesCtrl.getRoles)
 router.post('/addRol',rolesCtrl.addRol)
-router.post('/updateRol',rolesCtrl.updateRol)
+router.put('/updateRol',rolesCtrl.updateRol)
+router.delete('/deleteRol/:id',rolesCtrl.deleteRol)
 
 export default router
